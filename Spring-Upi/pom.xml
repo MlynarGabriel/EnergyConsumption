@@ -9,11 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>org.example</groupId>
-    <artifactId>EnergyConsumption</artifactId>
+    <artifactId>Spring-Upi</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>pom</packaging>
-    <name>EnergyConsumption</name>
-    <description>EnergyConsumption</description>
+    <name>Spring-Upi</name>
+    <description>Spring-Upi</description>
     <url/>
     <licenses>
         <license/>
@@ -21,9 +20,6 @@
     <developers>
         <developer/>
     </developers>
-    <modules>
-        <module>Energy Surveillance</module>
-    </modules>
     <scm>
         <connection/>
         <developerConnection/>
@@ -41,12 +37,14 @@
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
