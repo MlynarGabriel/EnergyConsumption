@@ -1,16 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
 
-<?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="org.example.ui.HelloController">
+<VBox fx:controller="org.example.ui.HelloController"
+      xmlns:fx="http://javafx.com/fxml"
+      spacing="10.0">
   <padding>
-    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    <Insets top="10" right="10" bottom="10" left="10"/>
   </padding>
 
-  <Label fx:id="welcomeText"/>
-  <Button text="Hello!" onAction="#onHelloButtonClick"/>
+  <Label text="Community Pool:"/>
+  <Label fx:id="poolUsageLabel" text="--"/>
+
+  <Label text="Grid Portion:"/>
+  <Label fx:id="gridPortionLabel" text="--"/>
+
+  <Button text="refresh" onAction="#refreshData"/>
+
+  <Separator/>
+
+  <Label text="Start"/>
+  <HBox spacing="5">
+    <DatePicker fx:id="startDate"/>
+    <ComboBox fx:id="startTime" prefWidth="80"/>
+  </HBox>
+
+  <Label text="End"/>
+  <HBox spacing="5">
+    <DatePicker fx:id="endDate"/>
+    <ComboBox fx:id="endTime" prefWidth="80"/>
+  </HBox>
+
+  <Button text="show data" onAction="#showData"/>
+
+  <Separator/>
+
+  <Label fx:id="communityProduced" text="Community produced: --"/>
+  <Label fx:id="communityUsed" text="Community used: --"/>
+  <Label fx:id="gridUsed" text="Grid used: --"/>
 </VBox>
