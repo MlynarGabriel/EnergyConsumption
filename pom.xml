@@ -22,7 +22,7 @@
         <developer/>
     </developers>
     <modules>
-        <module>Energy Surveillance</module>
+        <module>Energy-Surveillance</module>
     </modules>
     <scm>
         <connection/>
