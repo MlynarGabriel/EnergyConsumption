@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -31,11 +32,26 @@ public class EnergyConsumptionController {
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end
     ) {
-        // Beispiel-Daten summiert für den gesamten Zeitraum
-        double communityProduced = 22.0; // z. B. Summe aus 10.0 + 12.0
-        double communityUsed     = 19.0;
-        double gridUsed          = 3.0;
+        double totalProduced = 0.0;
+        double totalUsed = 0.0;
+        double totalGridUsed = 0.0;
 
-        return new HistoricalDto(start, communityProduced, communityUsed, gridUsed);
+
+        LocalDateTime current = start.truncatedTo(ChronoUnit.HOURS);
+        while (!current.isAfter(end)) {
+            double produced = Math.random() * 10;
+            double used = Math.random() * 10;
+            double gridUsed = Math.max(0, used - produced);
+
+            totalProduced += produced;
+            totalUsed += used;
+            totalGridUsed += gridUsed;
+
+            current = current.plusHours(1);
+        }
+
+        return new HistoricalDto(start, totalProduced, totalUsed, totalGridUsed);
     }
+
+
 }
