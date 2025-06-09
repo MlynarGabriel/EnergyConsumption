@@ -27,20 +27,15 @@ public class EnergyConsumptionController {
     }
 
     @GetMapping("/historical")
-    public List<HistoricalDto> getHistoricalEnergy(
+    public HistoricalDto getHistoricalEnergy(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end
     ) {
-        // BEISPIEL WERTE
-        LocalDateTime h1 = start.truncatedTo(ChronoUnit.HOURS);
-        LocalDateTime h2 = h1.plusHours(1).isBefore(end) ? h1.plusHours(1) : null;
+        // Beispiel-Daten summiert für den gesamten Zeitraum
+        double communityProduced = 22.0; // z. B. Summe aus 10.0 + 12.0
+        double communityUsed     = 19.0;
+        double gridUsed          = 3.0;
 
-        HistoricalDto first  = new HistoricalDto(h1, 10.0,  8.0,  2.0);
-        HistoricalDto second = h2 != null ? new HistoricalDto(h2, 12.0, 11.0, 1.0)
-                : null;
-
-        return second != null
-                ? List.of(first, second)
-                : List.of(first);
+        return new HistoricalDto(start, communityProduced, communityUsed, gridUsed);
     }
 }
