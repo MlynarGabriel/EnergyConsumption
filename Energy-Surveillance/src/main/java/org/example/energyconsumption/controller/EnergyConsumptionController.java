@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,21 +42,30 @@ public class EnergyConsumptionController {
     }
 
     @GetMapping("/historical")
-    public List<HistoricalDto> getHistoricalEnergy(
+    public HistoricalDto getHistoricalEnergy(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end
     ) {
-        List<EnergyUsageHour> usages = energyUsageRepository.findByHourBetweenOrderByHour(
-                start.truncatedTo(ChronoUnit.HOURS),
-                end.truncatedTo(ChronoUnit.HOURS)
-        );
+        double totalProduced = 0.0;
+        double totalUsed = 0.0;
+        double totalGridUsed = 0.0;
 
-        return usages.stream()
-                .map(u -> new HistoricalDto(
-                        u.getHour(),
-                        u.getCommunityProduced(),
-                        u.getCommunityUsed(),
-                        u.getGridUsed()))
-                .collect(Collectors.toList());
+
+        LocalDateTime current = start.truncatedTo(ChronoUnit.HOURS);
+        while (!current.isAfter(end)) {
+            double produced = Math.random() * 10;
+            double used = Math.random() * 10;
+            double gridUsed = Math.max(0, used - produced);
+
+            totalProduced += produced;
+            totalUsed += used;
+            totalGridUsed += gridUsed;
+
+            current = current.plusHours(1);
+        }
+
+        return new HistoricalDto(start, totalProduced, totalUsed, totalGridUsed);
     }
+
+
 }
