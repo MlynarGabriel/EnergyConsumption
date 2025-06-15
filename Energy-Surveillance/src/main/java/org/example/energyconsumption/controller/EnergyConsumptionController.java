@@ -2,6 +2,8 @@ package org.example.energyconsumption.controller;
 
 import org.example.energyconsumption.dto.CurrentEnergyDto;
 import org.example.energyconsumption.dto.HistoricalDto;
+import org.example.energyconsumption.entity.EnergyUsageHour;
+import org.example.energyconsumption.repository.EnergyRepository;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,17 +14,29 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/energy")
 public class EnergyConsumptionController {
 
+    private final EnergyRepository energyUsageRepository;
+
+    public EnergyConsumptionController(EnergyRepository energyUsageRepository) {
+        this.energyUsageRepository = energyUsageRepository;
+    }
+
     @GetMapping("/current")
     public CurrentEnergyDto getCurrentEnergy() {
-
         LocalDateTime hour = LocalDateTime.now().truncatedTo(ChronoUnit.HOURS);
-        double communityDepleted = 80.5; //AchTUNg Beispiel-Werte
-        double gridPortion     = 19.5;
+        EnergyUsageHour usage = energyUsageRepository.findByHour(hour);
+
+        double communityProduced = usage.getCommunityProduced();
+        double communityUsed = usage.getCommunityUsed();
+        double gridUsed = usage.getGridUsed();
+
+        double communityDepleted = communityProduced == 0 ? 100 : Math.min(100.0, (communityUsed / communityProduced) * 100);
+        double gridPortion = (gridUsed / (communityUsed + gridUsed)) * 100;
 
         return new CurrentEnergyDto(hour, communityDepleted, gridPortion);
     }
