@@ -19,7 +19,7 @@ public class EnergyProducer {
         try (Connection connection = factory.newConnection();
              Channel channel = connection.createChannel()) {
 
-            channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+            channel.queueDeclare(QUEUE_NAME, true, false, false, null);
             ObjectMapper mapper = new ObjectMapper();
             Random random = new Random();
 

@@ -1,25 +1,25 @@
 package org.example.serviceusage;
 
 public class EnergyMessage {
-    public String type;
-    public String association;
-    public double kwh;
-    public String datetime;
+    private String type;
+    private String association;
+    private double kwh;
+    private String datetime;
 
-    public String getDatetime() {
-        return datetime;
-    }
-
-    public double getKwh() {
-        return kwh;
+    public String getType() {
+        return type;
     }
 
     public String getAssociation() {
         return association;
     }
 
-    public String getType() {
-        return type;
+    public double getKwh() {
+        return kwh;
+    }
+
+    public String getDatetime() {
+        return datetime;
     }
 
     public void setType(String type) {
@@ -43,4 +43,3 @@ public class EnergyMessage {
         return String.format("[%s] %s - %s kWh", datetime, type, kwh);
     }
 }
-
