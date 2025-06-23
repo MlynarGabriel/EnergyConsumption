@@ -3,6 +3,7 @@ This Docker Compose configuration includes two essential containers for the proj
 
 ## Database
 The database container in this setup runs a PostgreSQL database configured with a user named **"disysuser"** and a password **"disyspw"**. For the project, you will need to create the necessary databases and tables to store and manage the required data effectively. The connection details are as follows: the hostname is the localhost, the default port is 5432, and you can authenticate using the provided username and password. Ensure that the PostgreSQL container is running before attempting to connect.
+
 database name is also disysuser
 ## Queue 
 The queue container in this setup runs a RabbitMQ Management instance, which provides both message queuing functionality and a user-friendly web-based management interface. RabbitMQ facilitates the communication between different components of the project by enabling reliable message passing. To connect to the RabbitMQ instance, you can access the management interface via a web browser by navigating to http://loclahost:15672. By default, you can log in using the username "guest" and password "guest", unless overridden in the Docker Compose configuration. For programmatic access, RabbitMQ client libraries can connect using the host at loclahost:5672. Ensure the container is running and accessible before attempting to connect.
@@ -10,10 +11,15 @@ The queue container in this setup runs a RabbitMQ Management instance, which pro
 
 
 
+## Docker nutzen
+in den ordner wo der docker-compose.yml ist und folgende code ausführen vorausgesetzt docker läuft in Hintergrund:
+docker compose up -d
+
+docker container schließen:
+docker compose down
 
 
-
-
-SQL Strukutr wiederherstellen:
+## SQL Struktur holen
+Wir haben einen voreingestellte Datenbank Strutur damit ihr das Schema holt foglende Code ausführen: 
 docker exec -i postgres psql -U disysuser -d disysuser < dump.sql
 
