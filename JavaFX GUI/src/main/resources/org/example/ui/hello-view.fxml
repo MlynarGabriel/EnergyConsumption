@@ -11,11 +11,16 @@
     <Insets top="10" right="10" bottom="10" left="10"/>
   </padding>
 
-  <Label text="Community Pool:"/>
-  <Label fx:id="poolUsageLabel" text="--"/>
+  <HBox spacing="5">
+    <Label text="Community Pool:"/>
+    <Label fx:id="poolUsageLabel" text="--"/>
+    <Label text="used"/>
+  </HBox>
 
-  <Label text="Grid Portion:"/>
-  <Label fx:id="gridPortionLabel" text="--"/>
+  <HBox spacing="5">
+    <Label text="Grid Portion:"/>
+    <Label fx:id="gridPortionLabel" text="--"/>
+  </HBox>
 
   <Button text="refresh" onAction="#refreshData"/>
 

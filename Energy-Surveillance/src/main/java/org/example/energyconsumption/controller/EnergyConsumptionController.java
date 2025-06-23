@@ -30,6 +30,10 @@ public class EnergyConsumptionController {
     public CurrentEnergyDto getCurrentEnergy() {
         LocalDateTime hour = LocalDateTime.now().truncatedTo(ChronoUnit.HOURS);
         EnergyUsageHour usage = energyUsageRepository.findByHour(hour);
+        if (usage == null) {
+            return new CurrentEnergyDto(hour, 0.0, 0.0); // oder andere Defaults
+        }
+
 
         double communityProduced = usage.getCommunityProduced();
         double communityUsed = usage.getCommunityUsed();
@@ -46,22 +50,16 @@ public class EnergyConsumptionController {
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end
     ) {
+        List<EnergyUsageHour> entries = energyUsageRepository.findByHourBetweenOrderByHour(start, end);
+
         double totalProduced = 0.0;
         double totalUsed = 0.0;
         double totalGridUsed = 0.0;
 
-
-        LocalDateTime current = start.truncatedTo(ChronoUnit.HOURS);
-        while (!current.isAfter(end)) {
-            double produced = Math.random() * 10;
-            double used = Math.random() * 10;
-            double gridUsed = Math.max(0, used - produced);
-
-            totalProduced += produced;
-            totalUsed += used;
-            totalGridUsed += gridUsed;
-
-            current = current.plusHours(1);
+        for (EnergyUsageHour entry : entries) {
+            totalProduced += entry.getCommunityProduced();
+            totalUsed += entry.getCommunityUsed();
+            totalGridUsed += entry.getGridUsed();
         }
 
         return new HistoricalDto(start, totalProduced, totalUsed, totalGridUsed);

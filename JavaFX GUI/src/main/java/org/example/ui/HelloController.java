@@ -48,15 +48,17 @@ public class HelloController {
             double communityDepleted = obj.get("communityDepleted").asDouble();
             double gridPortion = obj.get("gridPortion").asDouble();
 
-            poolUsageLabel.setText(String.format("Community Depleted: %.2f %%", communityDepleted));
-            gridPortionLabel.setText(String.format("Grid Portion: %.2f %%", gridPortion));
+
+            poolUsageLabel.setText(String.format("%.2f %%", communityDepleted));
+            gridPortionLabel.setText(String.format("%.2f %%", gridPortion));
 
         } catch (Exception e) {
             e.printStackTrace();
-            poolUsageLabel.setText("Error loading data");
-            gridPortionLabel.setText("Error loading data");
+            poolUsageLabel.setText("Error");
+            gridPortionLabel.setText("Error");
         }
     }
+
 
     @FXML
     public void showData() {
@@ -65,23 +67,15 @@ public class HelloController {
             String end = endDate.getValue().toString() + "T" + endTime.getValue();
 
             String json = apiService.getHistoricalData(start, end);
-            JsonNode array = objectMapper.readTree(json);
+            JsonNode obj = objectMapper.readTree(json); // kein Array!
 
-            if (array.isArray() && array.size() > 0) {
-                JsonNode firstEntry = array.get(0); // get the first record
+            double produced = obj.get("communityProduced").asDouble();
+            double used = obj.get("communityUsed").asDouble();
+            double grid = obj.get("gridUsed").asDouble();
 
-                double produced = firstEntry.get("communityProduced").asDouble();
-                double used = firstEntry.get("communityUsed").asDouble();
-                double grid = firstEntry.get("gridUsed").asDouble();
-
-                communityProduced.setText(String.format("Community Produced: %.2f kWh", produced));
-                communityUsed.setText(String.format("Community Used: %.2f kWh", used));
-                gridUsed.setText(String.format("Grid Used: %.2f kWh", grid));
-            } else {
-                communityProduced.setText("No Data");
-                communityUsed.setText("No Data");
-                gridUsed.setText("No Data");
-            }
+            communityProduced.setText(String.format("Community Produced: %.2f kWh", produced));
+            communityUsed.setText(String.format("Community Used: %.2f kWh", used));
+            gridUsed.setText(String.format("Grid Used: %.2f kWh", grid));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -90,4 +84,5 @@ public class HelloController {
             gridUsed.setText("Error loading data");
         }
     }
+
 }

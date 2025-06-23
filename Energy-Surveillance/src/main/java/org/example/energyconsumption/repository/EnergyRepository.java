@@ -12,5 +12,6 @@ public interface EnergyRepository extends JpaRepository<EnergyUsageHour, LocalDa
 
     List<EnergyUsageHour> findByHourBetweenOrderByHour(LocalDateTime start, LocalDateTime end);
 
-    EnergyUsageHour findByHour(LocalDateTime hour);  // for /current
+    EnergyUsageHour findByHour(LocalDateTime hour);  // für /current
 }
+
